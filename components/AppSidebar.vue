@@ -60,7 +60,7 @@ const items = [
     <SidebarHeader class="flex items-center justify-between pt-6">
       <div class="flex items-center gap-2">
         <img src="assets/images/cube.png" alt="Logo" class="h-6 w-6" />
-        <h1 class="font-bold">Forms Anyware</h1>
+        <h1 class="text-2xl font-bold">Forms Anyware</h1>
       </div>
     </SidebarHeader>
     <SidebarContent>

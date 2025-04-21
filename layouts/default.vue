@@ -2,8 +2,18 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import AppSidebar from "@/components/AppSidebar.vue";
-import { Moon, Sun } from 'lucide-vue-next';
+import { Moon, Sun, User, Settings, LogOut } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import AppBreadcrumb from '@/components/AppBreadcrumb.vue';
 
 // Create a cookie that persists sidebar state
 const sidebarState = useCookie('sidebar_state', {
@@ -28,6 +38,23 @@ const colorMode = useColorMode();
 const toggleColorMode = () => {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
 }
+
+// User info for avatar
+const currentUser = ref({
+  name: 'Vinicius Teruel',
+  email: 'vpteruel@gmail.com',
+  initials: 'VT'
+});
+
+// Handle logout
+const handleLogout = () => {
+  // Clear user data from storage
+  localStorage.removeItem('user');
+  sessionStorage.removeItem('user');
+  
+  // Navigate to login page
+  navigateTo('/login');
+}
 </script>
 
 <template>
@@ -44,20 +71,51 @@ const toggleColorMode = () => {
             <div class="flex items-center justify-between mb-4">
               <div class="flex items-center gap-3">
                 <SidebarTrigger />
-
-                <!-- <NuxtLink to="/" class="flex items-center gap-2 font-bold">
-                  <img src="assets/images/cube.png" alt="Logo" class="h-6 w-6" />
-                  <span>My App</span>
-                </NuxtLink> -->
-                <!-- <img src="assets/images/cube.png" alt="Logo" class="h-6 w-6" />
-                <h1 class="text-2xl font-bold">Forms Anyware</h1> -->
-                
+                <AppBreadcrumb />
               </div>
-              <Button variant="ghost" size="icon" @click="toggleColorMode" class="rounded-full">
-                <Sun v-if="colorMode.value === 'dark'" class="h-[1.2rem] w-[1.2rem]" />
-                <Moon v-else class="h-[1.2rem] w-[1.2rem]" />
-                <span class="sr-only">Toggle theme</span>
-              </Button>
+              <div class="flex items-center gap-2">
+                <Button variant="ghost" size="icon" @click="toggleColorMode" class="rounded-full">
+                  <Sun v-if="colorMode.value === 'dark'" class="h-[1.2rem] w-[1.2rem]" />
+                  <Moon v-else class="h-[1.2rem] w-[1.2rem]" />
+                  <span class="sr-only">Toggle theme</span>
+                </Button>
+                
+                <!-- User Avatar Dropdown -->
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" class="rounded-full">
+                      <Avatar>
+                        <AvatarImage src="" alt={currentUser.name} />
+                        <AvatarFallback class="bg-primary text-primary-foreground">
+                          {{ currentUser.initials }}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>
+                      {{ currentUser.name }}
+                      <p class="text-sm text-muted-foreground">
+                        {{ currentUser.email }}
+                      </p>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem @click="navigateTo('/profile')" class="cursor-pointer">
+                      <User class="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem @click="navigateTo('/settings')" class="cursor-pointer">
+                      <Settings class="mr-2 h-4 w-4" />
+                      <span>Settings</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem @click="handleLogout" class="cursor-pointer">
+                      <LogOut class="mr-2 h-4 w-4" />
+                      <span>Log out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
             <NuxtPage />
           </main>
