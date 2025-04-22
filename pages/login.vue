@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { toast } from 'vue-sonner'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { 
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -60,14 +67,6 @@ const handleLogin = async () => {
   }
   
   isLoading.value = true;
-
-  if (rememberMe.value) {
-    // Store user session in local storage
-    localStorage.setItem('user', JSON.stringify({ email: email.value }));
-  } else {
-    // Store user session in session storage
-    sessionStorage.setItem('user', JSON.stringify({ email: email.value }));
-  }
   
   try {
     // Here you would integrate with your authentication service
@@ -78,10 +77,17 @@ const handleLogin = async () => {
 
     if (email.value === 'test@test.com' && password.value === '123') {
       // Simulate successful login
-      toast("Login successful", {
-        description: "Welcome back!"
+
+      if (rememberMe.value) {
+        // Store user session in local storage
+        localStorage.setItem('user', JSON.stringify({ email: email.value }));
+      }
+
+      useCookie('current_user', { maxAge: 60 * 60 * 24 * 365 }).value = { email: email.value };
+      
+      toast("test", {
+        description: "test"
       });
-      return;
     } else {
       throw new Error('Invalid credentials');
     }
@@ -109,6 +115,7 @@ onMounted(() => {
       if (storedUser.value && storedUser.value.email) {
         emailFromStorage.value = storedUser.value.email;
         email.value = emailFromStorage.value;
+        rememberMe.value = true;
       }
     }
     
@@ -144,17 +151,7 @@ onMounted(() => {
               />
             </div>
             <div class="space-y-2">
-              <div class="flex items-center justify-between">
-                <Label for="password">Password</Label>
-                <Button 
-                  variant="link" 
-                  class="px-0 font-normal h-auto text-xs"
-                  type="button"
-                  @click="() => navigateTo('/forgot-password')"
-                >
-                  Forgot password?
-                </Button>
-              </div>
+              <Label for="password">Password</Label>
               <div class="relative">
                 <Input 
                   id="password" 
@@ -177,14 +174,24 @@ onMounted(() => {
                 </Button>
               </div>
             </div>
-            <div class="flex items-center space-x-2">
-              <input 
-                id="remember-me" 
-                v-model="rememberMe"
-                type="checkbox" 
-                class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary hover:cursor-pointer"
-              />
-              <Label for="remember-me" class="text-sm font-medium hover:cursor-pointer">Remember me</Label>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <input 
+                  id="remember-me" 
+                  v-model="rememberMe"
+                  type="checkbox" 
+                  class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary hover:cursor-pointer"
+                />
+                <Label for="remember-me" class="text-sm font-medium hover:cursor-pointer">Remember me</Label>
+              </div>
+              <Button 
+                variant="link" 
+                class="px-0 font-normal h-auto text-xs"
+                type="button"
+                @click="() => navigateTo('/forgot-password')"
+              >
+                Forgot password?
+              </Button>
             </div>
             <Button type="submit" class="w-full" :disabled="isLoading">
               <template v-if="isLoading">

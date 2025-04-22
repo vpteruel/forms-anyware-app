@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
-import AppSidebar from "@/components/AppSidebar.vue";
-import { Moon, Sun, User, Settings, LogOut } from 'lucide-vue-next';
-import { ref, watch } from 'vue';
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { Button } from "@/components/ui/button"
+import AppSidebar from "@/components/AppSidebar.vue"
+import { Moon, Sun, User, Settings, LogOut } from 'lucide-vue-next'
+import { ref, watch } from 'vue'
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -11,26 +11,26 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import AppBreadcrumb from '@/components/AppBreadcrumb.vue';
+} from '@/components/ui/dropdown-menu'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import AppBreadcrumb from '@/components/AppBreadcrumb.vue'
 
 // Create a cookie that persists sidebar state
 const sidebarState = useCookie('sidebar_state', {
   maxAge: 60 * 60 * 24 * 365, // Expires after 1 year
   sameSite: 'lax',
   default: () => 'open', // Default value if cookie doesn't exist
-});
+})
 
 // Create a reactive reference for sidebar state - initialize directly from cookie
-const isOpen = ref(sidebarState.value === 'open');
+const isOpen = ref(sidebarState.value === 'open')
 
 // Add function to update the cookie when sidebar state changes
 const onOpenChange = (open: boolean) => {
   console.log('Sidebar state changed to:', open);
   isOpen.value = open;
   sidebarState.value = open ? 'open' : 'closed';
-};
+}
 
 const colorMode = useColorMode();
 
@@ -44,13 +44,12 @@ const currentUser = ref({
   name: 'Vinicius Teruel',
   email: 'vpteruel@gmail.com',
   initials: 'VT'
-});
+})
 
 // Handle logout
 const handleLogout = () => {
   // Clear user data from storage
-  localStorage.removeItem('user');
-  sessionStorage.removeItem('user');
+  useCookie('current_user').value = null;
   
   // Navigate to login page
   navigateTo('/login');

@@ -6,7 +6,15 @@ const colorMode = useColorMode();
 
 const toggleColorMode = () => {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
-}
+};
+
+onMounted(() => {
+  // Check if the user is already logged in
+  const currentUser = useCookie('current_user').value;
+  if (currentUser) {
+    navigateTo('/');
+  }
+});
 </script>
 
 <template>

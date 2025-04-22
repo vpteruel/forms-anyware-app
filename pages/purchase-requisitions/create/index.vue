@@ -2,7 +2,8 @@
 import { Button } from "@/components/ui/button";
 
 definePageMeta({
-  layout: 'default'
+  layout: 'default',
+  middleware: 'auth'
 });
 </script>
 
