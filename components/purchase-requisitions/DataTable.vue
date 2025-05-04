@@ -72,7 +72,7 @@ const table = useVueTable({
         <Input class="max-w-sm" placeholder="Filter suppliers..."
           :model-value="table.getColumn('supplier')?.getFilterValue() as string"
           @update:model-value=" table.getColumn('supplier')?.setFilterValue($event)" />
-        <Button @click="navigateTo('/purchase-requisitions/create')">
+        <Button @click="navigateTo('/purchase-requisitions/new')">
           Create New
         </Button>
       </div>
