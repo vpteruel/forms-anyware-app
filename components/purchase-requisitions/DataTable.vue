@@ -66,120 +66,120 @@ const table = useVueTable({
 </script>
 
 <template>
-    <div>
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">Purchase Requisitions</h1>
-        <Input class="max-w-sm" placeholder="Filter suppliers..."
-          :model-value="table.getColumn('supplier')?.getFilterValue() as string"
-          @update:model-value=" table.getColumn('supplier')?.setFilterValue($event)" />
-        <Button @click="navigateTo('/purchase-requisitions/new')">
-          Create New
-        </Button>
-      </div>
+  <div>
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold">Purchase Requisitions</h1>
+      <Input class="max-w-sm" placeholder="Filter suppliers..."
+        :model-value="table.getColumn('supplier')?.getFilterValue() as string"
+        @update:model-value=" table.getColumn('supplier')?.setFilterValue($event)" />
+      <Button @click="navigateTo('/purchase-requisitions/new')">
+        Create New
+      </Button>
+    </div>
       
-      <div class="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
-              <TableHead 
-                v-for="header in headerGroup.headers" 
-                :key="header.id"
-                :class="{ 'cursor-pointer select-none': header.column.getCanSort() }"
-                @click="header.column.getToggleSortingHandler()"
-              >
-                <div class="flex items-center">
-                  <FlexRender
-                    v-if="!header.isPlaceholder"
-                    :render="header.column.columnDef.header"
-                    :props="header.getContext()"
-                  />
-                  <span v-if="header.column.getCanSort()" class="ml-1">
-                    <template v-if="header.column.getIsSorted() === 'asc'">
-                      <ArrowUp class="h-4 w-4" />
-                    </template>
-                    <template v-else-if="header.column.getIsSorted() === 'desc'">
-                      <ArrowDown class="h-4 w-4" />
-                    </template>
-                    <template v-else>
-                      <div class="h-4 w-4 opacity-30">⇅</div>
-                    </template>
-                  </span>
-                </div>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <template v-if="table.getRowModel().rows?.length">
-              <TableRow 
-                v-for="row in table.getRowModel().rows" 
-                :key="row.id"
-                class="hover:bg-muted/50 cursor-pointer"
-                @click="viewPurchaseRequisition(row.original.id)"
-              >
-                <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
-                  <FlexRender
-                    :render="cell.column.columnDef.cell"
-                    :props="cell.getContext()"
-                  />
-                </TableCell>
-              </TableRow>
-            </template>
-            <template v-else>
-            <TableRow>
-              <TableCell :colspan="columns.length" class="h-24 text-center">
-                No results.
+    <div class="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
+            <TableHead 
+              v-for="header in headerGroup.headers" 
+              :key="header.id"
+              :class="{ 'cursor-pointer select-none': header.column.getCanSort() }"
+              @click="header.column.getToggleSortingHandler()"
+            >
+              <div class="flex items-center">
+                <FlexRender
+                  v-if="!header.isPlaceholder"
+                  :render="header.column.columnDef.header"
+                  :props="header.getContext()"
+                />
+                <span v-if="header.column.getCanSort()" class="ml-1">
+                  <template v-if="header.column.getIsSorted() === 'asc'">
+                    <ArrowUp class="h-4 w-4" />
+                  </template>
+                  <template v-else-if="header.column.getIsSorted() === 'desc'">
+                    <ArrowDown class="h-4 w-4" />
+                  </template>
+                  <template v-else>
+                    <div class="h-4 w-4 opacity-30">⇅</div>
+                  </template>
+                </span>
+              </div>
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <template v-if="table.getRowModel().rows?.length">
+            <TableRow 
+              v-for="row in table.getRowModel().rows" 
+              :key="row.id"
+              class="hover:bg-muted/50 cursor-pointer"
+              @click="viewPurchaseRequisition(row.original.id)"
+            >
+              <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+                <FlexRender
+                  :render="cell.column.columnDef.cell"
+                  :props="cell.getContext()"
+                />
               </TableCell>
             </TableRow>
           </template>
-          </TableBody>
-        </Table>
-      </div>
+          <template v-else>
+          <TableRow>
+            <TableCell :colspan="columns.length" class="h-24 text-center">
+              No results.
+            </TableCell>
+          </TableRow>
+        </template>
+        </TableBody>
+      </Table>
+    </div>
   
-      <!-- Pagination -->
-      <div class="flex items-center justify-between px-2 mt-4">
-        <div class="flex-1 text-sm text-muted-foreground">
-          Showing {{ table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1 }} 
-          to {{ Math.min((table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize, data.length) }} 
-          of {{ data.length }} entries
-        </div>
-        <div class="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            size="icon"
-            @click="table.setPageIndex(0)"
-            :disabled="!table.getCanPreviousPage()"
-          >
-            <span class="sr-only">Go to first page</span>
-            <ChevronsLeft class="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            @click="table.previousPage()"
-            :disabled="!table.getCanPreviousPage()"
-          >
-            <span class="sr-only">Go to previous page</span>
-            <ChevronLeft class="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            @click="table.nextPage()"
-            :disabled="!table.getCanNextPage()"
-          >
-            <span class="sr-only">Go to next page</span>
-            <ChevronRight class="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            @click="table.setPageIndex(table.getPageCount() - 1)"
-            :disabled="!table.getCanNextPage()"
-          >
-            <span class="sr-only">Go to last page</span>
-            <ChevronsRight class="h-4 w-4" />
-          </Button>
-        </div>
+    <!-- Pagination -->
+    <div class="flex items-center justify-between px-2 mt-4">
+      <div class="flex-1 text-sm text-muted-foreground">
+        Showing {{ table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1 }} 
+        to {{ Math.min((table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize, data.length) }} 
+        of {{ data.length }} entries
+      </div>
+      <div class="flex items-center space-x-2">
+        <Button
+          variant="outline"
+          size="icon"
+          @click="table.setPageIndex(0)"
+          :disabled="!table.getCanPreviousPage()"
+        >
+          <span class="sr-only">Go to first page</span>
+          <ChevronsLeft class="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          @click="table.previousPage()"
+          :disabled="!table.getCanPreviousPage()"
+        >
+          <span class="sr-only">Go to previous page</span>
+          <ChevronLeft class="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          @click="table.nextPage()"
+          :disabled="!table.getCanNextPage()"
+        >
+          <span class="sr-only">Go to next page</span>
+          <ChevronRight class="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          @click="table.setPageIndex(table.getPageCount() - 1)"
+          :disabled="!table.getCanNextPage()"
+        >
+          <span class="sr-only">Go to last page</span>
+          <ChevronsRight class="h-4 w-4" />
+        </Button>
       </div>
     </div>
-  </template>
+  </div>
+</template>
