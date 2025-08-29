@@ -19,7 +19,7 @@ definePageMeta({
 });
 
 // Client-side only code should be in a conditional
-const storedUser = ref(null);
+const storedUser = ref<{ email: string } | null>(null);
 const emailFromStorage = ref('');
 
 // Form state
@@ -83,11 +83,9 @@ const handleLogin = async () => {
         localStorage.setItem('user', JSON.stringify({ email: email.value }));
       }
 
-      useCookie('current_user', { maxAge: 60 * 60 * 24 * 365 }).value = { email: email.value };
-      
-      toast("test", {
-        description: "test"
-      });
+      useCookie('current_user', { maxAge: 60 * 60 * 24 * 365 }).value = JSON.stringify({ email: email.value });
+      sessionStorage.setItem('user', JSON.stringify({ email: email.value }));
+
     } else {
       throw new Error('Invalid credentials');
     }

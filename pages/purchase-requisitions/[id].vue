@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { z } from 'zod';
-import { useForm } from 'vee-validate';
+import { useForm, type SubmissionHandler } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import { toast } from 'vue-sonner';
 
