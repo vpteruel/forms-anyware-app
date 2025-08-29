@@ -41,7 +41,7 @@ const columnFilters = ref<ColumnFiltersState>([])
 
 // Handle row click
 const viewPurchaseRequisition = (id) => {
-  navigateTo(`/purchase-requisitions/${id}`);
+  navigateTo(`/purchase-requisitions/view/${id}`);
 };
 
 // Table instance
