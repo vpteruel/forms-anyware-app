@@ -25,7 +25,7 @@ onMounted(() => {
           <div class="w-full px-4 sm:px-6 flex h-16 items-center">
             <NuxtLink to="/" class="flex items-center gap-2 font-bold">
               <img src="assets/images/cube.png" alt="Logo" class="h-6 w-6" />
-              <h1 class="text-2xl font-bold">Forms Anyware</h1>
+              <h1 class="text-2xl font-bold">DataHub</h1>
             </NuxtLink>
             <div class="ml-auto">
               <Button variant="ghost" size="icon" @click="toggleColorMode" class="rounded-full">
@@ -42,7 +42,7 @@ onMounted(() => {
         <footer class="py-6 border-t w-full">
           <div class="px-4 sm:px-6 flex flex-col items-center justify-between gap-4 md:flex-row">
             <p class="text-center text-sm leading-loose text-muted-foreground md:text-left">
-              &copy; {{ new Date().getFullYear() }} Forms Anyware. All rights reserved.
+              &copy; {{ new Date().getFullYear() }} DataHub. All rights reserved.
             </p>
           </div>
         </footer>

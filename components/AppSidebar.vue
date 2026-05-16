@@ -10,6 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarFooter,
 } from "@/components/ui/sidebar"
 
 // Get the current route
@@ -60,7 +61,7 @@ const items = [
     <SidebarHeader class="flex items-center justify-between pt-6">
       <div class="flex items-center gap-2">
         <img src="assets/images/cube.png" alt="Logo" class="h-6 w-6" />
-        <h1 class="text-2xl font-bold">Forms Anyware</h1>
+        <h1 class="text-2xl font-bold">DataHub</h1>
       </div>
     </SidebarHeader>
     <SidebarContent>
@@ -80,5 +81,33 @@ const items = [
         </SidebarGroupContent>
       </SidebarGroup>
     </SidebarContent>
+    <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton>
+                  <User2 /> Username
+                  <ChevronUp class="ml-auto" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="top"
+                class="w-[--reka-popper-anchor-width]"
+              >
+                <DropdownMenuItem>
+                  <span>Account</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <span>Billing</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <span>Sign out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
   </Sidebar>
 </template>
